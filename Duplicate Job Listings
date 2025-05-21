@@ -28,3 +28,13 @@ There is one company ID 345 that posted duplicate job listings. The duplicate li
 
 The dataset you are querying against may have different input & output - this is just an example!
 
+Solution:
+with cte as(
+SELECT count(distinct j.company_id) as duplicate_companies FROM job_listings j join job_listings j1 ON
+j.company_id = j1.company_id
+where j.title = j1.title and 
+j.description = j1.description
+group by j.company_id
+having count(j.company_id)>1)
+select sum(duplicate_companies) duplicate_companies from cte;
+
